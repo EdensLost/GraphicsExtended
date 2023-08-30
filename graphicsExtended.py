@@ -5,6 +5,25 @@ from graphics import *
 import numpy as np
 
 
+## Draw Win E code:
+#
+# Draws a window with added coordinates
+#
+def drawWindowE(title = "window", width = 200, height = 200, cordXMax = 100, cordYMax = 100, colorBG = "white"):
+    # Instantiates the window
+    win = GraphWin(title, width, height)
+
+    # Sets the coordinates of the window
+    win.setCoords(0.0, 0.0, cordXMax, cordYMax)
+
+    # Sets the background of the window
+    win.setBackground(colorBG)
+
+    return win
+## End DWE
+
+    #----------------------------------------------------------------------
+
 ## Draw Line E code:
 #
 # Draws a line with added color and outline funcitonality for static lines
