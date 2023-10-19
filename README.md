@@ -1,4 +1,2 @@
-# GraphicsExtended
-Adds helpful extensions to John Zell's graphics.py
-
-Make sure this is with the graphics.py or it will not work
+# GraphicsExtendedForPython
+ Multiple extensions for John Zelle's graphics.py and a polygon drawer
