@@ -3,7 +3,6 @@ import time
 import math as m
 from graphics import *
 from graphicsExtended import *
-from graphicObjectsGrouper import *
 
 # A library used for making graphic animation easier
 

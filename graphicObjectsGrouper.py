@@ -22,6 +22,12 @@ class ObjGroup():
         # Sets the center of the group
         self.setCenter(self.shapes)
 
+        poly = []
+        for i in range(0, len(self.shapes)): 
+            poly.append(polyE(self.shapes[i].getPoints(), self.colorsFill[i], self.colorsOutline[i]))
+
+        self.poly = poly
+
         return
     
     # Gives a default print statment? I think
@@ -249,7 +255,7 @@ class ObjGroup():
         return
 
     # Moves an group to a point
-    def moveToPoint(self, win, p):
+    def moveToPoint(self, win, p: Point):
         xDist = p.getX() - self.center.getX() 
         yDist = p.getY() - self.center.getY()
 
@@ -263,8 +269,10 @@ class ObjGroup():
         boxTR = Point(shapeCenter.x + (self.width / 2), shapeCenter.y + (self.height / 2))
 
 
-        square = drawRectE(win, boxTL, boxTR, "red")
-        centerPoint = drawCirE(win, shapeCenter, 1, "black")
+        square = rectE(boxTL, boxTR, "red")
+        centerPoint = cirE(shapeCenter, 1, "black")
+        square.draw(win)
+        centerPoint.draw(win)
         win.getMouse()
         centerPoint.undraw()
         square.undraw()
@@ -317,6 +325,16 @@ class ObjGroup():
         self.colorsOutline[index] = color
         self.poly[index].setFill(color)
         self.poly[index].setOutline(color)
+
+    def setScaleRot(self, growAmt = 1, rotDeg = 0):
+        # If the scale amount will change the scale
+        if (growAmt != 1):
+            self.scale(growAmt)
+
+        # If the rot amount will change the rotation
+        if (rotDeg != 0):
+            self.rotate(rotDeg)
+
 
     # Sets the scale and rotation so you don't have to manually draw
     def scaleRot(self, win, growAmt = 1, rotDeg = 0):
@@ -383,8 +401,6 @@ def setupInitialObjectGroup(win, shapeIndexs, startScale = 1, startRot = 0, star
 
     # Creates group object
     shape = createGroupObj(shapeIndexs)
-    
-    shape.draw(win)
 
     # If there is no new point set to normal point
     if (startPoint != None):
@@ -393,7 +409,9 @@ def setupInitialObjectGroup(win, shapeIndexs, startScale = 1, startRot = 0, star
     
 
     # Sets initial scale and rotation
-    shape.scaleRot(win, startScale, startRot)
+    shape.setScaleRot(startScale, startRot)
+
+    shape.draw(win)
 
     
     

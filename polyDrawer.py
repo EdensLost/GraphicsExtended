@@ -5,7 +5,64 @@ from graphicObjectsGrouper import *
 
 # A program library used for saving shapes to a file to make reusing the shapes easier later
 
+# Global variables for easy editing
+ScreenSize = 800
 
+
+"""
+	If you haven't used the program yet create an object first by running the program
+
+	Look in the objects.txt file created when you use the polydrawer for the first time 
+	The number you put in the list will be right beside what you named the object
+	Only put that number for drawing the corrosponding object
+
+	You don't need all of these lists but it can be helpful for changing 
+	the color of specific parts later if you separate the indexes like this
+"""
+baseDrawingIndexs = []
+# exampleIndex1 name
+exampleIndex1 = []
+# exampleIndex2 name
+exampleIndex2 = []
+# exampleIndex3 name
+exampleIndex3 = []
+# exampleIndex4 name
+exampleIndex4 = []
+# Add all parts together
+baseDrawingIndexs.extend(exampleIndex1 + exampleIndex2 + exampleIndex3 + exampleIndex4)
+
+# Sets the color and name of the polygon (The name isn't important)
+colorFill = "000000"
+startName = f"example"
+
+## Base drawings code: 
+#
+# Adds refrence drawings to background
+#
+## To Fix: nothing
+#
+def baseDrawings(win, ref, inst):
+	# Draws polygons and other objects for refrence
+	if (ref != None and inst != None):
+		ref.undraw()
+		inst.undraw()
+		
+
+	''' [Base Drawing] ----> Add a # when there are indexes you want to draw
+
+	
+	ref = setupInitialObjectGroup(win, baseDrawingIndexs)
+
+
+	#'''
+	
+	inst = drawTextE(win, Point(50, 2), "D and click = delete last point, F and click = finish shape")
+	# --------------
+
+	return inst
+## End of Base
+
+	#----------------------------------------------------------------------
 
 ## Polydraw code: 
 #
@@ -18,10 +75,12 @@ def polydraw():
 	setColorFill = "#"
 	setColorOutline = "#"
 
-	# Asks for what color the user wants
-	setColorFill += input("\nWhat color should the objects fill be? (Hexcode: 0f0f0f)\nColor = ")
-	setColorOutline += input("\nWhat color should the objects outline be? (Hexcode: 0f0f0f)\nColor = ")
+	# Asks for what to add to the shape name
 	setName = str(input("\nWhat is the name of the object?\nName = "))
+	name = startName + setName
+
+	setColorFill += colorFill
+	setColorOutline += colorFill
 
 	# Instantiates the list of points and current point amount
 	pointsForPoly = []
@@ -31,7 +90,7 @@ def polydraw():
 	oldP = None
 
 	# Creates the window 
-	win = drawWindowE("Polydraw", 1300, 1300, 100, 100, "grey")
+	win = drawWindowE("Polydraw", ScreenSize, ScreenSize, 100, 100, "grey")
 
 	# Draws refrences if any exist
 	ref = None
@@ -55,7 +114,10 @@ def polydraw():
 			# Removes the point from the list
 			pointsForPoly.pop()
 
-			oldP.undraw()
+			# Tries to undraw the last point
+			try: oldP.undraw()
+			except: pass
+
 			if (curPoints > 0):
 				# Undraws the deleted line and removes the line from the line list
 				refLine.undraw()
@@ -78,8 +140,8 @@ def polydraw():
 			print("reset")
 			for i in range(curPoints + 1):
 				
-				drawCirE(win, pointsForPoly[i], .2, "black")
-				drawTextE(win, pointsForPoly[i], i, 5)
+				drawCirE(win, pointsForPoly[i], 1, "black")
+				drawTextE(win, pointsForPoly[i], i, 12)
 
 
 				if (i > 0):
@@ -92,11 +154,11 @@ def polydraw():
 		elif (key == "f" and curPoints >= 0):
 			
 
-			print(f"\n{setName} Drawing Finished")
+			print(f"\n{name} Drawing Finished")
 
 			polyShape = drawPolyE(win, pointsForPoly, setColorFill, setColorOutline)
 
-			inst.setText("Click and press q to add to the objects list\nPress any other key to return back to drawing the shape")
+			finishInst = drawTextE(win, Point(50, 20), "Click and press q to add to the objects list\nPress any other key to return back to drawing the shape")
 			win.getMouse()
 			key = win.checkKey()
 			if (key == "q"):
@@ -106,9 +168,18 @@ def polydraw():
 
 			# Redraws the scene
 			drawRectE(win, Point(0, 0), Point(100, 100), "grey")
+			inst = baseDrawings(win, ref, inst)
 
-			# Draws refrences if any exist
-			baseDrawings(win, ref, inst)
+
+			print("reset")
+			for i in range(curPoints + 1):
+				
+				drawCirE(win, pointsForPoly[i], 1, "black")
+				drawTextE(win, pointsForPoly[i], i, 12)
+
+
+				if (i > 0):
+					drawLineE(win, pointsForPoly[i - 1], pointsForPoly[i])
 
 
 			
@@ -117,8 +188,8 @@ def polydraw():
 		else:
 			curPoints += 1
 			
-			drawCirE(win, p, .2, "black")
-			drawTextE(win, p, curPoints, 5)
+			drawCirE(win, p, 1, "black")
+			drawTextE(win, p, curPoints, 12)
 
 			if (oldP != None):
 				refLine = Line(p, oldP)
@@ -137,8 +208,8 @@ def polydraw():
 				print("reset")
 				for i in range(curPoints + 1):
 					
-					drawCirE(win, pointsForPoly[i], .2, "black")
-					drawTextE(win, pointsForPoly[i], i, 5)
+					drawCirE(win, pointsForPoly[i], 1, "black")
+					drawTextE(win, pointsForPoly[i], i, 12)
 
 
 					if (i > 0):
@@ -152,10 +223,10 @@ def polydraw():
 	
 	print(curPoints, pointsForPoly)
 
-	input("\nEnter to close")
+	win.getMouse()
 	win.close()
 
-	return pointsForPoly, setName, setColorFill, setColorOutline
+	return pointsForPoly, name, setColorFill, setColorOutline
 ## End of PD
 
 	#----------------------------------------------------------------------
@@ -167,6 +238,13 @@ def polydraw():
 ## To Fix: nothing
 #
 def shapeFile(points, objName, colorFill, colorOutline):
+
+	try: 
+		file = open(f"objects.txt", "x")
+		file.close()
+	except: 
+		pass
+
 	file = open(f"objects.txt", "r")
 
 	lines = file.readlines()
@@ -182,6 +260,7 @@ def shapeFile(points, objName, colorFill, colorOutline):
 	setnum = eval(setnum) + 1
 	
 	# Opens the objects file
+	file.close()
 	file = open(f"objects.txt", "a")
 
 	# Writes all of the points under the name of the object after all of the text already in the objects file
@@ -191,50 +270,6 @@ def shapeFile(points, objName, colorFill, colorOutline):
 	file.close()
 
 ## End of shapeFile
-
-	#----------------------------------------------------------------------
-
-## Base drawings code: 
-#
-# Adds refrence drawings to background
-#
-## To Fix: nothing
-#
-def baseDrawings(win, ref, inst):
-	# Draws polygons and other objects for refrence
-	if (ref != None and inst != None):
-		ref.undraw()
-		inst.undraw()
-	
-	#''' [Base Drawing]
-
-	baseDrawingIndexs = [10, 11, 62, 63, 64, 65]
-	ref = setupInitialObjectGroup(win, baseDrawingIndexs)
-
-	baseDrawingIndexs = [68]
-	ref = setupInitialObjectGroup(win, baseDrawingIndexs, .4, -7, Point(16.1, 33))
-	ref.setColor(0, "#000000")
-
-	baseDrawingIndexs = [68]
-	ref = setupInitialObjectGroup(win, baseDrawingIndexs, .4, -7, Point(15.8, 33))
-	ref.setColor(0, "#34185e")
-
-	baseDrawingIndexs = [68]
-	ref = setupInitialObjectGroup(win, baseDrawingIndexs, .4, -7, Point(15.5, 33))
-
-
-	#''' a35315
-
-
-	inst = drawTextE(win, Point(50, 2), "D and click = delete last point, F and click = finish shape")
-	# --------------
-
-	return inst
-
-# Right Jack-O-Lantern Eye Inner
-
-
-## End of main
 
 	#----------------------------------------------------------------------
 
