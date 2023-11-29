@@ -1,7 +1,7 @@
 # Zealot Graphics Library
 
 Zealot is based on the fact that this graphics library is built off Zelle's graphics library 
-and I have been overly passionate about this library so Zealot gained its name.
+and the definition (One who is zealous, one who is full of zeal for his own specific beliefs or objectives, usually in the negative sense of being too passionate - _wiktionary.org_) so Zealot gained its name.
 
  Multiple extensions for John Zelle's graphics.py and a polygon drawer/viewer.
 
