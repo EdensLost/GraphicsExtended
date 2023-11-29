@@ -31,7 +31,7 @@ def drawWindowE(title = "window", width = 200, height = 200, cordXMax = 100, cor
 #
 # Creates a line with added color and outline funcitonality for lines
 #
-def lineE(point1, point2, fill = "black"):
+def lineE(point1, point2, fill = "black", width = 1):
 	# Instantiates the line at its two points
 	line = Line(Point(point1.x, point1.y), Point(point2.x, point2.y))
 
@@ -39,7 +39,7 @@ def lineE(point1, point2, fill = "black"):
 	line.setFill(fill)
 
 	# Sets the width of the line
-	line.setWidth
+	line.setWidth(width)
 
 	return line
 ## End LE
@@ -50,8 +50,8 @@ def lineE(point1, point2, fill = "black"):
 #
 # Draws a line with added color and outline funcitonality for lines
 #
-def drawLineE(win, point1, point2, fill = "black"):
-	line = lineE(point1, point2, fill)
+def drawLineE(win, point1, point2, fill = "black", width = 1):
+	line = lineE(point1, point2, fill, width)
 	line.draw(win)
 
 	return line
@@ -100,7 +100,7 @@ def drawRectE(win, point1, point2, fill = "white", outline = "black", borderWidt
 #
 # Creates a circle with added color and outline funcitonality for circles
 #
-def cirE(point, radius, fill = "white", outline = "black"):
+def cirE(point, radius, fill = "white", outline = "black", width = 1):
 	# Instantiates the circle at its two points
 	cir = Circle(Point(point.x, point.y), radius)
 
@@ -109,6 +109,9 @@ def cirE(point, radius, fill = "white", outline = "black"):
 
 	# Sets the outline of the circle
 	cir.setOutline(outline)
+
+	# Sets the width of the circle outline
+	cir.setWidth(width)
 
 	return cir
 ## End CE
@@ -119,7 +122,7 @@ def cirE(point, radius, fill = "white", outline = "black"):
 #
 # Draws a circle with added color and outline funcitonality for circles
 #
-def drawCirE(win, point, radius, fill = "white", outline = "black"):
+def drawCirE(win, point, radius, fill = "white", outline = "black", width = 1):
 	cir = cirE(point, radius, fill, outline)
 	cir.draw(win)
 
@@ -372,13 +375,12 @@ class Button():
 
 	#----------------------------------------------------------------------
 
-## Draw X code:
+## Create X code:
 #
-# Draws an X at the center of a point scaling based on given size
+# Creates an X at the center of a point scaling based on given size
 #
-def drawX(win, point, size = 1, fill = "black"):
-	width = size
-	half = width / 2
+def creaXE(point, size = 1, fill = "black", width = 1):
+	half = size / 2
 
 	# Assigns all of the corners of the x
 	tRCorner = Point(point.x + half, point.y + half)
@@ -387,12 +389,24 @@ def drawX(win, point, size = 1, fill = "black"):
 	tLCorner = Point(point.x - half, point.y + half)
 
 	# Draws the lines of the X
-	line1 = Line(tLCorner, bRCorner)
-	line1.setFill(fill)
+	line1 = lineE(tLCorner, bRCorner, fill, width)
+	line2 = lineE(tRCorner, bLCorner, fill, width)
+
+	return line1, line2
+## End DX
+
+	#----------------------------------------------------------------------
+
+## Draw X code:
+#
+# Draws an X at the center of a point scaling based on given size
+#
+def drawX(win, point, size = 1, fill = "black", width = 1):
+	line1, line2 = creaXE(point, size, fill, width)
 	line1.draw(win)
-	line2 = Line(tRCorner, bLCorner)
-	line2.setFill(fill)
 	line2.draw(win)
+
+	return line1, line2
 ## End DX
 
 	#----------------------------------------------------------------------
