@@ -338,6 +338,11 @@ class Button():
 	# Gets the text associated with the button
 	def getText(self):
 		return self.tag
+	
+	# Sets the text associated with the button
+	def setText(self, newText: str):
+		self.tag = newText
+		self.text.setText(newText)
 
 	# Checks to see if the button has been pressed
 	def checkButton(self, mousePos):
